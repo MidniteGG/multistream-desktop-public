@@ -3,6 +3,12 @@
 Neon Multistream Desktop is a cross-platform multistream chat client from
 NeonDestiny × TeamMidnite.
 
+<p>
+  <a href="https://multistream.teammidnite.tv/NeonMulti/download.php?platform=windows"><strong>⬇️ Download Latest for Windows</strong></a>
+  ·
+  <a href="https://multistream.teammidnite.tv/">Visit the Product Page</a>
+</p>
+
 This public project page shares development updates and provides a place for
 community feedback. The application source is maintained separately in the
 private engineering repository.
