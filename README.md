@@ -8,6 +8,8 @@ compact workspace.
   <a href="https://multistream.teammidnite.tv/NeonMulti/download.php?platform=windows"><strong>⬇️ Download Latest for Windows</strong></a>
   ·
   <a href="https://multistream.teammidnite.tv/">Visit the Product Page</a>
+  ·
+  <a href="https://auth.teammidnite.tv/">NeonLogin Settings</a>
 </p>
 
 ## Highlights
@@ -91,6 +93,7 @@ Native packages are available for:
 - Linux AppImage and Debian packages for x64 and arm64
 
 Download the latest release from the [Multistream product page](https://multistream.teammidnite.tv/).
+Manage linked streaming accounts through [NeonLogin Settings](https://auth.teammidnite.tv/).
 
 Windows releases may display an Unknown Publisher or SmartScreen warning while
 the application is distributed without a paid commercial code-signing
