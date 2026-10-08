@@ -1,12 +1,22 @@
 # Neon Multistream Development Log
 
-## Public repository update — 2026-10-07
+## 1.3.118 — 2026-10-08
 
-- The Neon Multistream Desktop repository is now publicly available at
-  [MidniteGG/multistream-desktop](https://github.com/MidniteGG/multistream-desktop).
-- The complete development history remains available in this Dev Log.
-- Bug reports and feature requests should be filed through the repository's
-  [GitHub Issues](https://github.com/MidniteGG/multistream-desktop/issues/new).
+- Added read-only Velora monitor channels so additional public channels can be
+  watched alongside the main Velora connection without replacing it.
+- Velora monitor channels persist, reconnect independently, and can be removed
+  from the monitored-channel list; sending and moderation remain scoped to the
+  primary Velora channel.
+- Prevented Twitch EventSub authorization and point-redeem warnings when the
+  current channel belongs to another broadcaster; Twitch chat still uses the
+  authenticated user connection for reading and sending.
+- Carries forward the production horizontal OBS overlay improvements completed
+  during the 1.3.117 development cycle: full usernames and messages without
+  internal ellipses, single-line natural-width groups, 8px spacing, viewport-
+  boundary overflow clipping, bottom anchoring, and preserved badges, colors,
+  and emotes.
+- Promoted the tested Windows portable artifact to version `1.3.118` after
+  multi-stream, same-platform, monitored-channel, and outbound-message tests.
 
 ## 1.3.117 — 2026-10-06
 
