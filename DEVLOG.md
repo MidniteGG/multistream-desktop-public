@@ -1,5 +1,62 @@
 # Neon Multistream Development Log
 
+## 1.3.121 — 2026-10-09
+
+- Published Windows portable v1.3.121 (71,421,138 bytes) to the versioned
+  download, Latest alias, and auto-update manifest. Packaged runtime files
+  match the tested source; the protected overlay stylesheet is unchanged.
+- Fixed EventSub subscription capability mismatch: the server returns
+  `can_read_chat`, while the desktop previously required `can_chat`.
+- Includes direct IRC source-room-ID resolution without requiring a separate
+  connection to the originating channel, stable source-ID merging, persisted
+  attribution, and channel-scoped Twitch badge catalogs.
+- Includes the author wrapping repair for badge-heavy usernames and narrow panes.
+- Displays originating-room subscription/role badges from `source_badges` and
+  preserves receiving-room badges separately as metadata. Explicitly empty
+  source badges never fall back to receiving-room subscriber badges.
+- Adds bounded sanitized diagnostics for one Shared Chat message per app run,
+  recording source metadata through normalization, merging, and rendering.
+- Separates explicit/resolved origin authority from local-room evidence and
+  unresolved relays. Non-authoritative incoming channels cannot gain authority
+  during deduplication or override EventSub source metadata; legacy history
+  lacking source evidence is treated as unknown.
+- Routes Twitch JOIN notices into Notices and limits them to one per channel
+  every ten seconds, retaining the existing per-user duplicate suppression.
+- Verification: 16 provenance tests, 8 Twitch transport tests, and Chromium
+  rendering checks passed. Public live IRC sampling returned ROOMSTATE only;
+  no live cross-channel message or authenticated EventSub delivery was observed.
+
+## 1.3.120 — 2026-10-10
+
+- Fixed Twitch IRC Shared Chat source attribution using Twitch’s documented
+  `source-room-id` and `room-id` metadata.
+- Learned room IDs from `ROOMSTATE` before chat messages arrive, so the first
+  mirrored message can display its verified originating channel.
+- Preserved source badges from `source-badges` and kept destination routing
+  separate from visible source attribution.
+- Published the corrected Windows portable auto-update release as `1.3.120`.
+
+## 1.3.119 — 2026-10-09
+
+- Fixed Twitch Shared Chat attribution so each message retains the originating
+  broadcaster channel instead of inheriting the active or connected channel.
+- Separated source-channel provenance from the destination channel used for
+  connection and moderation routing, while preserving sender metadata,
+  timestamps, badges, emotes, and platform identity.
+- Deduplicated relayed IRC/EventSub copies when stable message IDs or matching
+  same-source message metadata permit it; unknown provenance now uses a neutral
+  fallback instead of inventing a channel.
+- Handles Twitch source-broadcaster display-name metadata when the source login
+  field is omitted, preserving the visible origin label where Twitch provides it.
+- Added provenance regression coverage for `#xthyqueen` relayed into
+  `#tehkluma`, native Twitch messages, destination routing, and stable IDs.
+- Published the corrected Windows portable release at approximately 69 MB as
+  `1.3.119`.
+- Follow-up regression repair: unknown Shared Chat relays no longer overwrite a
+  verified source during IRC/EventSub merging, and EventSub badge metadata is
+  retained in full so channel-specific Twitch assets resolve from the verified
+  source catalog.
+
 ## 1.3.118 — 2026-10-08
 
 - Added read-only Velora monitor channels so additional public channels can be
