@@ -1,122 +1,80 @@
-# Neon Multistream Desktop
+# Neon Multistream
 
-Neon Multistream Desktop is a cross-platform chat client for streamers who
-want Twitch, YouTube Live, Kick, and Velora conversations together in one
-compact workspace.
+A compact cross-platform multistream chat client branded for NeonDestiny × TeamMidnite.
 
-<p>
-  <a href="https://multistream.teammidnite.tv/NeonMulti/download.php?platform=windows"><strong>⬇️ Download Latest for Windows</strong></a>
-  ·
-  <a href="https://multistream.teammidnite.tv/">Visit the Product Page</a>
-  ·
-  <a href="https://auth.teammidnite.tv/">NeonLogin Settings</a>
-</p>
+## Current prototype
 
-## Highlights
+- Native Electron desktop shell and Windows packaging configuration
+- Chatterino-inspired compact multi-tab chat interface
+- Combined and per-platform views for Twitch, YouTube Live, Kick, VPZone, and Velora
+- Persistent-feeling desktop layout with search, pause, message counts, and send-target controls
+- Live public Twitch chat reading over Twitch IRC WebSocket
+- NeonLogin browser SSO with a localhost callback and one-time token exchange
+- OS-encrypted persistent NeonLogin session storage where supported
+- Streaming account-link status sourced from NeonLogin
+- Original Neon Multistream application icon (not the NeonChat icon)
+- One-, two-, or three-pane customizable chat workspace
+- Per-pane platform filters and draggable platform-tab ordering
+- Saved density, font size, timestamps, badges, connection events, accent, and effects preferences
+- Authenticated YouTube Live chat discovery through the TeamMidnite broker
+- YouTube Live message polling and channel-owner message sending
+- Automatic Google access-token refresh without exposing provider tokens to the desktop renderer
+- Authenticated VPZone WebSocket chat using `chat:read` and `chat:write`
+- VPZone presence/system-event handling and chat message sending
+- Public read-only Velora chat with saved channel selection and Socket.IO reconnection
+- Server-side VPZone refresh-token rotation; access tokens stay outside the renderer
+- No Discord or Spotify integration
 
-- Unified and per-platform chat views for Twitch, YouTube Live, Kick, and Velora
-- One-, two-, or three-pane customizable workspace
-- Draggable platform tabs, per-pane filters, search, pause, message counts, and send-target controls
-- Adjustable density, font size, timestamps, badges, connection events, accent colors, and visual effects
-- Persistent channel and layout preferences between launches
-- Compact streamer-focused design that works beside OBS or on a second monitor
+The public Twitch reader is deliberately anonymous and read-only. Sending and authenticated connectors require OAuth scopes and server-side token handling; tokens should never be embedded in the packaged application.
 
-## Platform features
+## Run
 
-### Twitch
+```bash
+npm install
+npm start
+```
 
-- Anonymous public read-only chat for channels that do not require account linking
-- Authenticated account linking through NeonLogin
-- Twitch IRC WebSocket chat transport with reconnect handling
-- Shared Chat source-channel attribution
-- Native Twitch emote rendering and authenticated emote discovery
-- Twitch EventSub support for channel chat messages and point-redemption alerts
-- Helix chat sending with scope and token validation
+## Build desktop releases
 
-### YouTube Live
+```bash
+npm run build:win
+npm run build:mac
+npm run build:linux
+```
 
-- Authenticated live-chat discovery through the TeamMidnite broker
-- Live message polling
-- Channel-owner message sending
-- Google access-token refresh without exposing provider tokens to the desktop renderer
+The Windows build produces a portable x64 executable. The macOS build produces
+signed-when-configured DMG/ZIP packages for Intel and Apple Silicon. The Linux
+build produces AppImage and Debian packages for x64 and arm64. Artifacts are
+written to `release/`. macOS artifacts must be built on macOS; Linux artifacts
+can be built on Linux, and Windows artifacts can be built on Windows or Linux.
 
-### Kick
+`npm run build:all` is available for CI runners that can build all requested
+targets, but separate OS-native jobs are recommended for release publishing.
 
-- Account-link status through NeonLogin
-- Channel chat integration where supported by the connected account
-- Platform-aware send controls and capability handling
+## Connector roadmap
 
-### Velora
+1. TeamMidnite account-link OAuth broker
+2. Authenticated Twitch EventSub + Send Chat Message API
+3. YouTube Live `liveChatMessages.streamList` and `insert`
+4. Authenticated Kick sending after chat scopes and production API access are confirmed
+5. Authenticated Velora sending after a documented third-party write flow is published
 
-- Public read-only channel chat
-- Saved channel selection and Socket.IO reconnection
-- Profile and role badge enrichment
-- 7TV emote support
-- Points-celebration and redemption-event rendering
-- Duplicate-event protection for live and historical messages
+## Point redemption alerts
 
-## OBS and overlay tools
+Twitch uses the NeonLogin redemption broker (`/api/multistream-twitch-redemptions.php`) and an EventSub WebSocket owned by the Electron main process. The broker subscribes to custom reward redemptions for the linked broadcaster. Reading another public Twitch channel does not authorize its redemption feed. Existing accounts without the required permission must use **Reconnect Twitch** once.
 
-- Transparent OBS Browser Source overlay
-- Frameless transparent desktop pop-out overlay
-- Vertical Clean layout with left/right column positioning
-- Horizontal Stream Bar layout with top/bottom positioning
-- Platform and role accents, source-channel labels, timestamps, badges, and fade controls
-- Overlay-only bot filtering with Neon-known and custom streamer-defined bots
-- Configurable column width, message density, font size, visible elements, and max-message behavior
-- URL parameters for direct OBS layout overrides
+The desktop connection confirms readiness after subscription creation, retries transient failures, monitors keepalives, and transfers subscriptions during requested reconnects. Logout stops the feed. See [Twitch WebSocket lifecycle](https://dev.twitch.tv/docs/eventsub/handling-websocket-events/).
 
-## Chat and moderation experience
+Velora uses the public `/chat` Socket.IO namespace after `joinChannel`. Its `pointsCelebration` event supplies `id`, `itemName`, `cost`, `username`, `displayName`, `message`, and `createdAt`; history can supply the same payload in a `points-celebration` card. Both routes converge on the same renderer and deduplicate by channel and redemption ID. This contract was checked against the public [Velora channel frontend](https://velora.tv/tehkluma) on September 12, 2026. No point-spending request is made by this connector.
 
-- Platform-aware composer that exposes only capabilities available to the connected account
-- Searchable emote picker with previews, categories, and provider attribution
-- Platform-specific send targets in combined chat
-- Inline animated emotes and supported GIF/media rendering
-- Connection notices and reconnect state handling
-- Account-aware identity, badge, role, and profile enrichment
-- Main-chat bot visibility can remain independent from overlay bot filtering
+Run `npm test` for transport lifecycle and redemption rendering coverage. A live viewer redemption on each platform is the remaining end-to-end acceptance check after installing a release.
 
-## Privacy and security
 
-- OAuth and provider tokens stay in server-side brokers or OS-protected session storage where supported
-- Tokens are not embedded in the packaged desktop application
-- Anonymous Twitch reading remains read-only
-- Authenticated sending requires the appropriate provider scopes
-- The desktop renderer does not receive provider refresh tokens
+### Vertical Clean & Horizontal OBS Overlays
 
-## Downloads
+- **Vertical Clean**: Keep the OBS Browser Source canvas at your scene resolution (e.g. 1920×1080). Select Vertical Clean in the overlay dialog, set Column Position to Left or Right, and set Column Width (default 380px, configurable from 240–600px). Transparent message feed with compact vertical spacing and high-contrast text shadowing. URL override: `?theme=vertical-clean&position=right&columnWidth=380`.
+- **Horizontal Stream Bar**: Places a horizontal stream bar along the bottom (or top) of the canvas with side-by-side message cards and colored left-border role/platform accents. URL override: `?theme=horizontal&position=bottom` (or `?position=top`).
 
-Native packages are available for:
+An individual Browser Source can override settings with URL query parameters. URL overrides remain in effect when live settings arrive; omit those parameters to follow the desktop controls. Restart/rebuild the desktop app to serve updated overlay assets, then refresh the OBS source. The Neon Test generator and delivery paths are unchanged.
 
-- Windows x64 portable executable
-- macOS DMG and ZIP packages for Intel and Apple Silicon
-- Linux AppImage and Debian packages for x64 and arm64
-
-Download the latest release from the [Multistream product page](https://multistream.teammidnite.tv/).
-Manage linked streaming accounts through [NeonLogin Settings](https://auth.teammidnite.tv/).
-
-Windows releases may display an Unknown Publisher or SmartScreen warning while
-the application is distributed without a paid commercial code-signing
-certificate. Verify the release checksum shown on the product page when needed.
-
-## Development updates
-
-Read the [public Development Log](DEVLOG.md) for release notes, fixes,
-validation details, and integration updates.
-
-## Report problems or request features
-
-Please [report a bug or request a feature](https://github.com/MidniteGG/multistream-desktop-public/issues/new).
-Search existing issues first and include:
-
-- App version
-- Operating system and architecture
-- Connected platform(s)
-- Steps to reproduce
-- Relevant logs, screenshots, or error messages
-
-## Project status
-
-Neon Multistream Desktop is under active development. Platform capabilities
-depend on account authorization, provider API availability, and the scopes
-granted through NeonLogin.
+The browser layout regression check is `node test/overlay-layout.browser.cjs` with Playwright and its Chromium browser installed (`PLAYWRIGHT_MODULE_PATH` can specify an existing Playwright package). It measures real card widths at 1920px and 320px, both anchors, wrapping, transparent backgrounds, live width changes, and Neon Test rendering.

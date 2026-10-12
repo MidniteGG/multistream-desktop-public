@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon Multistream · OBS Overlay</title>
+  <link rel="stylesheet" href="overlay.css">
+</head>
+<body class="overlay-body">
+  <!-- Pop-out Window Controls Header (only visible when in pop-out / desktop window mode) -->
+  <header class="popout-header hidden" id="popoutHeader">
+    <div class="popout-drag-area">
+      <span class="popout-indicator"></span>
+      <span class="popout-title">NEON OBS OVERLAY</span>
+    </div>
+    <div class="popout-actions">
+      <button type="button" id="pinButton" class="popout-btn active" title="Toggle Always-on-Top">📌</button>
+      <button type="button" id="clearBtn" class="popout-btn" title="Clear Overlay Messages">⌫</button>
+      <button type="button" id="closeBtn" class="popout-btn danger" title="Close Overlay Window">✕</button>
+    </div>
+  </header>
+
+  <!-- Overlay Chat Messages Container -->
+  <main class="overlay-container theme-glass direction-bottom-up" id="overlayContainer">
+    <div class="overlay-messages" id="overlayMessages" aria-live="polite"></div>
+  </main>
+
+  <script src="overlay.js"></script>
+</body>
+</html>

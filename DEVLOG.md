@@ -1,5 +1,17 @@
 # Neon Multistream Development Log
 
+## Rebuild verification — 2026-10-11
+
+- Synchronized the npm lockfile with the current desktop application version
+  `1.3.121` so clean installs and packaged builds resolve the same release
+  metadata as `package.json` and `version.json`.
+- Rebuilt the current cross-platform desktop packaging configuration and
+  retained the generated release artifacts as local ignored build output;
+  source and test changes remain the canonical GitHub-delivered update.
+- Full automated verification passed, including the OBS overlay localhost/SSE
+  smoke test and the existing connector, provenance, rendering, and
+  browser-layout coverage. Linux x64 AppImage and Snap packaging completed.
+
 ## 1.3.121 — 2026-10-09
 
 - Published Windows portable v1.3.121 (71,421,138 bytes) to the versioned
