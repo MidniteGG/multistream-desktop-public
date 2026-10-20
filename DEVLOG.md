@@ -37,6 +37,10 @@
 - Full automated verification passed on the Linux build, including the OBS
   overlay localhost/SSE smoke test. Both Linux artifacts were added to the
   public GitHub `v1.3.122` release.
+- Added Debian package metadata (homepage and maintainer email) so Linux Mint,
+  Cinnamon, and Debian can install the app through a native `.deb` package.
+- Debian package SHA-256:
+  `1b6185c1ab97d757710c3f0a9fa4f5fbcf0e55fd1db0b46ed3dafe47e3f1f512`.
 
 ## Rebuild verification — 2026-10-11
 
