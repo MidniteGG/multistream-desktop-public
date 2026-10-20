@@ -1,5 +1,36 @@
 # Neon Multistream Development Log
 
+## 1.3.122 — 2026-10-20
+
+- Corrected the Twitch renderer: EventSub badge version IDs were incorrectly
+  interpreted as badge names by the Velora badge resolver, hiding official
+  moderator, founder, subscriber, VIP, and other Twitch badges.
+- Uses Twitch's exact set/version catalog keys, preserving founder/0 and
+  hyphenated badge IDs. Twitch rendering uses official catalog artwork only;
+  it does not substitute custom glyphs or a different badge version.
+- Added a regression that failed before the fix and passes with actual badge
+  object shapes and the real production badge resolver functions.
+- Verified all 568 entries from blondeallday's live badge catalog resolve;
+  Chromium loaded official moderator, founder, subscriber, and VIP images and
+  confirmed visible 14px dimensions in a test fixture using the app stylesheet.
+- Live delivery of tehKluma's own badge metadata remains to be confirmed on
+  the user's desktop after updating.
+
+- Fixed Twitch Channel Point redemption reauthorization so the reconnect flow
+  requests `channel:read:redemptions` instead of the IRC-only scope set.
+- Corrected the broker’s missing-scope response for Channel Point redemption
+  subscriptions and added WebSocket close-code/reason diagnostics to reconnect
+  notices.
+- Restored official Twitch subscriber, VIP, moderator, and other source badges
+  in Shared Chat when IRC and EventSub badge metadata arrives asynchronously.
+- Preserved all official Twitch badges for solo streams and added a one-time
+  notice when Twitch reports a source channel relayed into a destination
+  channel through Shared Chat.
+- Velora and Kick remain unchanged because their current connectors do not
+  expose reliable shared-chat relay metadata.
+- Added regression coverage for redemption disconnect diagnostics, Shared Chat
+  source badge recovery, solo Twitch badges, and Shared Chat notices.
+
 ## Rebuild verification — 2026-10-11
 
 - Synchronized the npm lockfile with the current desktop application version
