@@ -30,6 +30,13 @@
   expose reliable shared-chat relay metadata.
 - Added regression coverage for redemption disconnect diagnostics, Shared Chat
   source badge recovery, solo Twitch badges, and Shared Chat notices.
+- Rebuilt Linux x64 packages from the same corrected `1.3.122` source: AppImage
+  SHA-256 `0076124263aab8d1b007ec47bceb721bc1340dcfc452dfbeb186891c7c7c1bf3`
+  and Snap SHA-256
+  `33b29611316236dd8283d92c856a02244551127fcb9893b39d0fc8838f089636`.
+- Full automated verification passed on the Linux build, including the OBS
+  overlay localhost/SSE smoke test. Both Linux artifacts were added to the
+  public GitHub `v1.3.122` release.
 
 ## Rebuild verification — 2026-10-11
 
